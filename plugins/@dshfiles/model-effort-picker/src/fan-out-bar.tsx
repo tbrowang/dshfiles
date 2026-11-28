@@ -67,7 +67,10 @@ export const FanOutSelection = (props: {
     return (
       <div
         aria-label="Fan-out selection"
-        className={cn('dshx:shrink-0 dshx:flex-col dshx:gap-0.5 dshx:border-t dshx:border-border dshx:px-0 dshx:pt-1.5 dshx:@max-pane-compact:mr-2', props.className)}
+        className={cn(
+          'dshx:shrink-0 dshx:flex-col dshx:gap-0.5 dshx:border-t dshx:border-border dshx:px-0 dshx:pt-1.5 dshx:@max-pane-compact:mr-2',
+          props.className,
+        )}
         data-model-picker-fan-out="bar"
         role="group"
       >
@@ -97,7 +100,8 @@ export const FanOutSelection = (props: {
           const name = group === undefined || model === undefined ? route.model : ModelPickerModel.displayName({ group, model })
           return (
             <li
-              className="dshx:flex dshx:h-8 dshx:min-w-0 dshx:items-center dshx:gap-2 dshx:rounded-md dshx:border dshx:border-border dshx:pr-0.5 dshx:pl-2 dshx:text-sm"
+              // Round 7 W11: the × centres on Close's glyph line (no right inset, 1 px into the border).
+              className="dshx:flex dshx:h-8 dshx:min-w-0 dshx:items-center dshx:gap-2 dshx:rounded-md dshx:border dshx:border-border dshx:pr-0 dshx:pl-2 dshx:text-sm"
               data-model-fan-out-chip
               key={`${route.provider}/${route.model}`}
             >
@@ -112,7 +116,7 @@ export const FanOutSelection = (props: {
               </span>
               <Button
                 aria-label={props.t('remove', { model: name })}
-                className="dshx:size-7 dshx:shrink-0 dshx:text-muted-foreground dshx:pointer-coarse:size-11"
+                className="dshx:-mr-px dshx:size-7 dshx:shrink-0 dshx:text-muted-foreground dshx:pointer-coarse:size-11"
                 onClick={() => props.onRemove(route)}
                 size="icon-xs"
                 type="button"

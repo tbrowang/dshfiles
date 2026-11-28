@@ -2104,12 +2104,13 @@ const SidebarRootContent = (props: SidebarShellProps): JSX.Element => {
                     <Button
                       aria-controls="thread-sidebar-fan-out-models"
                       aria-expanded={fanOutPicking}
-                      className="dshx:h-8 dshx:rounded-lg dshx:border-dashed dshx:px-2.5 dshx:pointer-coarse:h-11"
+                      className="dshx:h-8 dshx:rounded-lg dshx:px-2.5 dshx:pointer-coarse:h-11"
                       data-fan-out-edit
                       onClick={() => setFanOutPicking(!fanOutPicking)}
                       size="sm"
                       type="button"
-                      variant="outline"
+                      // Round 7 W11: the kit's ghost button, not a dashed outline.
+                      variant="ghost"
                     >
                       {text(props.t, 'threadSidebarFanOutEditModels')}
                     </Button>

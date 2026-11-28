@@ -391,7 +391,8 @@ work on any surface.
    magenta, olive, cyan). The data ramp never starts with the accent, and ChartFrame maps the chart library's
    palette onto it. A status hue appears in a chart only when the series is
    that status (failed requests are `destructive`). Quota is ink while healthy, amber at 15% or less, red when
-   spent.
+   spent. An unknown quota is blank in a dense list (the model picker's rows, where a column of dashes would be noise)
+   and a muted "—" in a pane that names the account (the picker's Account and Fallbacks sections), never "0%".
    **Chart labels.** Axis ticks and titles, legend labels (steps and gradient ends too) and facet labels inside a
    `ChartFrame` read at the full secondary ink (`#646362`, `#a7a4a1`: AA on bg, panel and raised), 12px, tabular
    figures; the chart library's own 68–78% opacity and 10–11px are overridden, and the frame's own text is the 12px meta

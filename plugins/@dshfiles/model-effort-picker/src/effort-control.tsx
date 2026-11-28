@@ -147,6 +147,10 @@ export const EffortControl = (props: {
         </h3>
         <InfoHint description="Higher effort lets the model think for longer before it answers." label="About reasoning effort" />
       </div>
+      {/* Round 7 W11: on touch, where the help icon is hidden, the same sentence shows, as it does for Fallbacks. */}
+      <p className="dshx:hidden dshx:text-xs dshx:text-pretty dshx:text-muted-foreground dshx:pointer-coarse:block" data-model-effort-help>
+        Higher effort lets the model think for longer before it answers.
+      </p>
       <span aria-live="polite" className="dshx:sr-only" data-model-effort-announcer>
         {applied === null
           ? ''

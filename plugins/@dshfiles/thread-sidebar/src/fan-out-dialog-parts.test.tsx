@@ -132,8 +132,9 @@ describe('fan-out sheet with the keyboard open (council picker round 4, T3)', ()
 
   it('puts Cancel / Send on one footer row, and Edit models at the end of the chips', () => {
     expect(dialog).toMatch(/className="dshx:flex dshx:shrink-0 dshx:flex-row dshx:items-center[^"]*"\s+data-fan-out-footer/u)
-    // Round 5 U2: Edit models is the chip row's last chip (outline, dashed).
-    expect(dialog).toMatch(/trailing=\{\s*<Button[\s\S]{0,600}variant="outline"/u)
+    // Round 5 U2, round 7 W11: Edit models is the chip row's last item, the kit's ghost button.
+    expect(dialog).toMatch(/trailing=\{\s*<Button[\s\S]{0,700}variant="ghost"/u)
+    expect(dialog).not.toContain('dshx:border-dashed')
   })
 })
 
