@@ -88,7 +88,8 @@ export const ModelRow = (props: {
   return (
     <div
       className={cn(
-        'dshx:group/row dshx:relative dshx:flex dshx:h-8 dshx:cursor-default dshx:items-center dshx:gap-1 dshx:rounded-md dshx:pr-0.5 dshx:pointer-coarse:pr-0 dshx:transition-colors dshx:hover:bg-accent/60 dshx:pointer-coarse:h-11',
+        // Round 7 W2: on touch the list rests on a row start (no half row under the search).
+        'dshx:pointer-coarse:snap-start dshx:group/row dshx:relative dshx:flex dshx:h-8 dshx:cursor-default dshx:items-center dshx:gap-1 dshx:rounded-md dshx:pr-0.5 dshx:pointer-coarse:pr-0 dshx:transition-colors dshx:hover:bg-accent/60 dshx:pointer-coarse:h-11',
         // Round 4 T1, round 5 U4: a row's wash means one thing, what Enter does. The model in use is its check and 600
         // weight, a collected route its checkbox, and the inspected model is named by the details header (no bar).
         props.highlighted === true && 'dshx:bg-foreground/12 dshx:hover:bg-foreground/12',

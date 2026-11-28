@@ -42,7 +42,11 @@ export const AccountRows = (props: {
 
   return (
     <section aria-labelledby={headingId} className="dshx:mt-3 dshx:flex dshx:flex-col dshx:gap-1" data-model-accounts>
-      <div className="dshx:flex dshx:items-baseline dshx:justify-between dshx:gap-2 dshx:pr-7.5 dshx:pointer-fine:pr-7.25" data-model-accounts-heading>
+      <div
+        className="dshx:flex dshx:items-baseline dshx:justify-between dshx:gap-2 dshx:pr-7.5 dshx:pointer-fine:pr-7.25"
+        data-model-accounts-heading
+        data-model-section-heading
+      >
         <h3 className="dshx:text-xs dshx:font-medium" id={headingId}>
           Account
         </h3>
@@ -119,7 +123,10 @@ export const AccountRows = (props: {
 const SingleAccount = (props: { readonly account: Account; readonly accent: AccountAccent | undefined; readonly quota: ModelQuota | undefined }) => {
   const percent = props.quota === undefined ? undefined : Math.round(props.quota.percent)
   return (
-    <div className="dshx:flex dshx:h-8 dshx:min-w-0 dshx:items-center dshx:gap-2 dshx:px-2 dshx:pointer-fine:pr-1.75 dshx:text-xs dshx:pointer-coarse:h-11" data-model-account-single>
+    <div
+      className="dshx:flex dshx:h-8 dshx:min-w-0 dshx:items-center dshx:gap-2 dshx:px-2 dshx:pointer-fine:pr-1.75 dshx:text-xs dshx:pointer-coarse:h-11"
+      data-model-account-single
+    >
       <AccountDot accent={props.accent ?? AccountColor.of({ instanceId: props.account.id })} className="dshx:size-2" />
       <span className="dshx:min-w-0 dshx:flex-1 dshx:truncate">{props.account.name}</span>
       {/* Round 5 U9: the value in the rows' 48 px right-aligned column and the check slot after it, so it ends under

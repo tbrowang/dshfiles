@@ -19,7 +19,9 @@ describe('details body under its header (council picker round 4, T10)', () => {
     const fallbacks = source('fallbacks-section.tsx')
     expect(fallbacks).toMatch(/if \(!props\.expanded\) opening\.current = true/u)
     expect(fallbacks.match(/onClick=\{toggle\}/gu) ?? []).toHaveLength(2)
-    expect(fallbacks).toContain("if (top !== body.scrollTop) body.scrollTo({ top, behavior: 'auto' })")
+    // Round 7 W2: it lands a section heading under the line, following the chain as it loads.
+    expect(fallbacks).toContain("if (plan.top !== body.scrollTop) body.scrollTo({ top: plan.top, behavior: 'auto' })")
+    expect(fallbacks).toContain('const observer = new ResizeObserver(reveal)')
   })
 
   it('starts the heading, Add fallback and the rank numbers on one left edge, the help icon beside the label', () => {

@@ -141,7 +141,7 @@ export const EffortControl = (props: {
 
   return (
     <section aria-label="Reasoning effort" className="dshx:@container/effort dshx:mt-3 dshx:flex dshx:flex-col dshx:gap-1.5" data-model-effort>
-      <div className="dshx:flex dshx:min-w-0 dshx:items-center dshx:gap-1">
+      <div className="dshx:flex dshx:min-w-0 dshx:items-center dshx:gap-1" data-model-section-heading>
         <h3 className="dshx:truncate dshx:text-xs dshx:font-medium" id={headingId}>
           Reasoning effort · <span className="dshx:font-normal dshx:text-muted-foreground">{heading}</span>
         </h3>
@@ -189,7 +189,8 @@ export const EffortControl = (props: {
                   ? 'dshx:pointer-coarse:basis-1/4 dshx:@min-[22.25rem]/effort:pointer-coarse:basis-0'
                   : 'dshx:pointer-coarse:basis-0 dshx:@max-[20.25rem]/effort:pointer-coarse:basis-1/4',
                 'dshx:pointer-coarse:text-sm',
-                checked && 'dshx:segment-thumb dshx:font-selected dshx:text-foreground dshx:dark:[box-shadow:inset_0_1px_0_color-mix(in_oklab,var(--dsw-alias-label-primary)_6%,transparent)]!',
+                checked &&
+                  'dshx:segment-thumb dshx:font-selected dshx:text-foreground dshx:dark:[box-shadow:inset_0_1px_0_color-mix(in_oklab,var(--dsw-alias-label-primary)_6%,transparent)]!',
               )}
               data-model-effort-default={segment.id === undefined || undefined}
               data-model-effort-option

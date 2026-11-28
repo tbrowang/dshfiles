@@ -183,9 +183,10 @@ export const ModelDetails = (props: {
       </header>
 
       <div
-        // Round 5 U10: once the header draws its hairline, the top fade goes, so nothing shows half-faded under the line.
+        // Round 5 U10, round 7 W2: an 8 px top inset; once scrolled, a 12 px top fade under the hairline, and the reveal
+        // lands a section heading below it (fallbacks-section.tsx), so no row is cut in half there.
         // Round 6 V1: on touch no scrollbar takes width (as on an iPhone), so a scrolling body is as wide as a still one.
-        className="dshx:min-h-0 dshx:flex-1 dshx:overflow-y-auto dshx:[overflow-x:clip] dshx:[mask-image:linear-gradient(to_bottom,transparent,black_8px,black_calc(100%-8px),transparent)] dshx:data-[scrolled]:[mask-image:linear-gradient(to_bottom,black,black_calc(100%-8px),transparent)] dshx:pointer-coarse:[scrollbar-width:none] dshx:pointer-coarse:[&::-webkit-scrollbar]:hidden"
+        className="dshx:min-h-0 dshx:flex-1 dshx:overflow-y-auto dshx:[overflow-x:clip] dshx:pt-2 dshx:[scroll-padding-top:12px] dshx:[mask-image:linear-gradient(to_bottom,transparent,black_8px,black_calc(100%-8px),transparent)] dshx:data-[scrolled]:[mask-image:linear-gradient(to_bottom,transparent,black_12px,black_calc(100%-8px),transparent)] dshx:pointer-coarse:[scrollbar-width:none] dshx:pointer-coarse:[&::-webkit-scrollbar]:hidden"
         data-model-details-body
         data-scrolled={scrolled || undefined}
         onScroll={event => setScrolled(event.currentTarget.scrollTop > 0)}

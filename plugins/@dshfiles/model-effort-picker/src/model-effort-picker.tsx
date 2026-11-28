@@ -610,7 +610,7 @@ export const ModelEffortPicker = ({ locked, available, directory, load, select, 
                   )}
                 </div>
                 <ScrollArea
-                  className="dshx:min-h-0 dshx:flex-1 dshx:data-[empty]:hidden dshx:[mask-image:linear-gradient(to_bottom,transparent,black_8px,black_calc(100%-8px),transparent)] dshx:[&_[data-slot=scroll-area-viewport]>div]:block! dshx:[&_[data-slot=scroll-area-viewport]]:[overflow-x:clip]! dshx:pointer-coarse:[&_[data-slot=scroll-area-scrollbar]]:pointer-events-none"
+                  className="dshx:min-h-0 dshx:flex-1 dshx:data-[empty]:hidden dshx:[mask-image:linear-gradient(to_bottom,transparent,black_8px,black_calc(100%-8px),transparent)] dshx:pointer-coarse:[mask-image:linear-gradient(to_bottom,transparent,black_12px,black_calc(100%-12px),transparent)] dshx:pointer-coarse:[&_[data-slot=scroll-area-viewport]]:snap-y dshx:pointer-coarse:[&_[data-slot=scroll-area-viewport]]:snap-mandatory dshx:pointer-coarse:[&_[data-slot=scroll-area-viewport]]:scroll-pt-1 dshx:[&_[data-slot=scroll-area-viewport]>div]:block! dshx:[&_[data-slot=scroll-area-viewport]]:[overflow-x:clip]! dshx:pointer-coarse:[&_[data-slot=scroll-area-scrollbar]]:pointer-events-none"
                   data-empty={emptyState === null ? undefined : ''}
                   data-model-picker-scroll
                 >

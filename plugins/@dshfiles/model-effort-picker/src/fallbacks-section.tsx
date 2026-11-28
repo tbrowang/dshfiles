@@ -101,17 +101,42 @@ export const FallbackList = (props: {
     const element = section.current
     const body = element?.closest('[data-model-details-body]')
     if (element === null || element === undefined || !(body instanceof HTMLElement)) return
-    // Round 6 V2: scroll only as far as needed (\"nearest\") to show what opening revealed: the first route, or Add
-    // fallback's whole 44 pt target.
-    const target = element.querySelector('[data-model-fallback-rung]') ?? element.querySelector('[data-model-fallback-add]')
-    const top = FallbackReveal.scrollTop({ body: body.getBoundingClientRect(), scrollTop: body.scrollTop, target: (target ?? element).getBoundingClientRect() })
-    if (top !== body.scrollTop) body.scrollTo({ top, behavior: 'auto' })
+    // Round 6 V2, round 7 W2: show what opening revealed (the first route, or Add fallback's whole 44 pt target), but
+    // land on a section heading 12 px under the header line, never on a row cut in half. The chain can arrive a moment
+    // after the section opens, so the reveal runs again as the section grows, for a short while.
+    const reveal = (): void => {
+      const target = element.querySelector('[data-model-fallback-rung]') ?? element.querySelector('[data-model-fallback-add]')
+      const box = body.getBoundingClientRect()
+      const plan = FallbackReveal.plan({
+        scrollTop: body.scrollTop,
+        maxScroll: body.scrollHeight - body.clientHeight,
+        below: (target ?? element).getBoundingClientRect().bottom - box.bottom,
+        headings: [...body.querySelectorAll('[data-model-section-heading]')].map(heading => heading.getBoundingClientRect().top - box.top),
+      })
+      // A short body cannot scroll a heading up to the line: give it just that much room below, until Fallbacks closes.
+      if (plan.room > 0) body.style.paddingBottom = `${String(plan.room)}px`
+      if (plan.top !== body.scrollTop) body.scrollTo({ top: plan.top, behavior: 'auto' })
+    }
+    reveal()
+    if (typeof ResizeObserver === 'undefined') return
+    const observer = new ResizeObserver(reveal)
+    observer.observe(element)
+    const stop = setTimeout(() => observer.disconnect(), FallbackReveal.SETTLE_MS)
+    return () => {
+      clearTimeout(stop)
+      observer.disconnect()
+    }
+  }, [props.expanded])
+  useEffect(() => {
+    if (props.expanded) return
+    const body = section.current?.closest('[data-model-details-body]')
+    if (body instanceof HTMLElement) body.style.paddingBottom = ''
   }, [props.expanded])
 
   return (
     <section aria-label="Fallbacks" className="dshx:mt-3 dshx:flex dshx:flex-col dshx:gap-1" data-model-fallbacks ref={section}>
       {/* Round 4 T10: the label, its chevron and its help icon sit together on the inspector's left edge, as effort's do. */}
-      <div className="dshx:flex dshx:min-w-0 dshx:items-center dshx:gap-1">
+      <div className="dshx:flex dshx:min-w-0 dshx:items-center dshx:gap-1" data-model-section-heading>
         <button
           aria-controls={listId}
           aria-expanded={props.expanded}
@@ -334,11 +359,32 @@ export class FallbackFocus {
   }
 }
 
+/** Where the reveal scrolls the details body, and the room it adds below (round 7 W2). */
+export interface RevealPlan {
+  readonly top: number
+  readonly room: number
+}
+
 /** Where to scroll the details body so what opening Fallbacks revealed shows (round 6 V2): the nearest position. */
 export class FallbackReveal {
-  static scrollTop(input: { readonly body: { readonly bottom: number }; readonly scrollTop: number; readonly target: { readonly bottom: number } }): number {
-    const below = input.target.bottom - input.body.bottom
-    return below <= 0 ? input.scrollTop : input.scrollTop + below
+  /** The heading's distance under the header line once snapped (the body's 12 px top fade sits above it). */
+  static readonly HEADING_GAP = 12
+  /** How long after opening the reveal follows the section's growth (the chain loading in). */
+  static readonly SETTLE_MS = 1_500
+
+  /**
+   * Round 7 W2: where to scroll so the target (`below`: how far its bottom is under the body's) shows while a section
+   * heading sits 12 px under the line: the least such heading snap that shows it whole, else the furthest heading; and
+   * the room the body must add below when it cannot scroll that far. Nothing changes when the target already shows.
+   */
+  static plan(input: { readonly scrollTop: number; readonly maxScroll: number; readonly below: number; readonly headings: readonly number[] }): RevealPlan {
+    if (input.below <= 0) return { top: input.scrollTop, room: 0 }
+    const needed = input.scrollTop + input.below
+    const snaps = input.headings.map(offset => Math.round(input.scrollTop + offset - FallbackReveal.HEADING_GAP)).filter(top => top > input.scrollTop)
+    if (snaps.length === 0) return { top: input.scrollTop, room: 0 }
+    const showing = snaps.filter(top => top >= needed)
+    const top = showing.length > 0 ? Math.min(...showing) : Math.max(...snaps)
+    return { top, room: Math.max(0, top - input.maxScroll) }
   }
 }
 
