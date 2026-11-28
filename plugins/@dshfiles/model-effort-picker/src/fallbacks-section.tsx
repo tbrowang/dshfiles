@@ -46,8 +46,9 @@ export const FallbackList = (props: {
   readonly serving: string | null
   readonly error: string | null
   readonly onAdd: () => void
-  readonly onRemove: (index: number) => void
-  readonly onMove: (from: number, to: number) => void
+  /** Round 7 W9: each write settles with the chain the Host confirmed, or why it refused. */
+  readonly onRemove: (index: number) => Promise<FallbackWrite>
+  readonly onMove: (from: number, to: number) => Promise<FallbackWrite>
   readonly onPolicyChange: (policy: ModelFallbackSnapshot['returnPolicy']) => void
   readonly onUseDefault: () => void
   readonly onReturn: () => void
@@ -60,11 +61,21 @@ export const FallbackList = (props: {
   // Round 6 V7: a removed route's Actions button is gone, so focus moves to the route now at its rank (or the one above,
   // or Add fallback when none is left) once the chain updates, and the removal is announced.
   const focusAfterRemove = useRef<number | null>(null)
+  const actionsAt = (index: number): HTMLElement | undefined => section.current?.querySelectorAll<HTMLElement>('[data-model-fallback-actions]')[index]
   const removeAt = (index: number): void => {
     const row = props.rows[index]
+    if (row === undefined) return
     focusAfterRemove.current = index
-    if (row !== undefined) setMoved(`${row.model} on ${row.account} removed`)
-    props.onRemove(index)
+    void FallbackEdits.remove({
+      row,
+      write: () => props.onRemove(index),
+      announce: setMoved,
+      // Rejected: the route stays, and so does focus, on its Actions button.
+      refocus: () => {
+        focusAfterRemove.current = null
+        actionsAt(index)?.focus()
+      },
+    })
   }
   useEffect(() => {
     const index = focusAfterRemove.current
@@ -77,8 +88,8 @@ export const FallbackList = (props: {
   }, [props.rows.length])
   const moveTo = (from: number, to: number): void => {
     const row = props.rows[from]
-    props.onMove(from, to)
-    if (row !== undefined) setMoved(`${row.model} on ${row.account} is now fallback ${String(to + 1)}`)
+    if (row === undefined) return
+    void FallbackEdits.move({ row, write: () => props.onMove(from, to), announce: setMoved, refocus: () => actionsAt(from)?.focus() })
   }
 
   const move = (event: KeyboardEvent<HTMLLIElement>, index: number): void => {
@@ -350,6 +361,48 @@ export const FallbackList = (props: {
  * The ordered routes the Host walks when this thread's model request fails under Priority distribution. The Host
  * owns the chain (AI Accounts runs the fail-over), so every edit is a Host write and the list renders what it stored.
  */
+/** A chain write as the Host settled it (round 7 W9). */
+export type FallbackWrite =
+  | { readonly ok: true; readonly chain: readonly { readonly provider: string; readonly model: string }[] }
+  | { readonly ok: false; readonly error: string }
+
+/**
+ * Round 7 W9: a move or removal is announced once the Host confirms it, with the rank it confirmed; a refused write is
+ * announced once (the visible error is not a live region) and focus goes back to the route's Actions button.
+ */
+export class FallbackEdits {
+  static async move(input: {
+    readonly row: Pick<FallbackRow, 'id' | 'model' | 'account'>
+    readonly write: () => Promise<FallbackWrite>
+    readonly announce: (text: string) => void
+    readonly refocus: () => void
+  }): Promise<void> {
+    const result = await input.write()
+    if (!result.ok) {
+      input.announce(`Could not move ${input.row.model} on ${input.row.account}. ${result.error}`)
+      input.refocus()
+      return
+    }
+    const rank = result.chain.findIndex(route => `${route.provider}/${route.model}` === input.row.id)
+    if (rank >= 0) input.announce(`${input.row.model} on ${input.row.account} is now fallback ${String(rank + 1)}`)
+  }
+
+  static async remove(input: {
+    readonly row: Pick<FallbackRow, 'id' | 'model' | 'account'>
+    readonly write: () => Promise<FallbackWrite>
+    readonly announce: (text: string) => void
+    readonly refocus: () => void
+  }): Promise<void> {
+    const result = await input.write()
+    if (!result.ok) {
+      input.announce(`Could not remove ${input.row.model} on ${input.row.account}. ${result.error}`)
+      input.refocus()
+      return
+    }
+    if (!result.chain.some(route => `${route.provider}/${route.model}` === input.row.id)) input.announce(`${input.row.model} on ${input.row.account} removed`)
+  }
+}
+
 /** Round 7 W1: a keyboard-highlighted action draws the accent ring inside it (the kit's row highlight alone is faint). */
 const ACTION_ITEM =
   'dshx:focus-visible:outline-2 dshx:focus-visible:-outline-offset-2 dshx:focus-visible:outline-solid dshx:focus-visible:outline-(--dsw-alias-state-business-primary)'
@@ -414,20 +467,23 @@ export const FallbacksSection = (props: {
   const chain = snapshot.threadChain ?? snapshot.defaultChain
   const disabled = props.busy || pending
 
-  const write = async (call: () => Promise<ModelFallbackSnapshot>): Promise<void> => {
+  const write = async (call: () => Promise<ModelFallbackSnapshot>): Promise<FallbackWrite> => {
     setPending(true)
     setError(null)
     try {
-      await call()
+      const confirmed = await call()
       state.refetch()
+      return { ok: true, chain: confirmed.threadChain ?? confirmed.defaultChain }
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : String(cause))
+      const message = cause instanceof Error ? cause.message : String(cause)
+      setError(message)
+      return { ok: false, error: message }
     } finally {
       setPending(false)
     }
   }
 
-  const save = (next: readonly FallbackRoute[]): void => void write(() => api.setChain({ sessionId: props.sessionId, chain: [...next] }))
+  const save = (next: readonly FallbackRoute[]): Promise<FallbackWrite> => write(() => api.setChain({ sessionId: props.sessionId, chain: [...next] }))
   const servingLabel = snapshot.active === null ? null : ModelPickerModel.fallbackLabel(props.groups, snapshot.active)
   const canAdd = props.current !== null && !chain.some(route => route.provider === props.current?.provider && route.model === props.current.model)
   const rows = chain.map((route): FallbackRow => {

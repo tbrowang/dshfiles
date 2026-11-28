@@ -12,7 +12,7 @@ describe('focus after a fallback is removed (council picker round 6, V7)', () =>
   it('keeps Radix from returning focus to the gone trigger, and announces the removal', () => {
     const source = readFileSync(new URL('../src/fallbacks-section.tsx', import.meta.url), 'utf8')
     expect(source).toContain('if (focusAfterRemove.current !== null) event.preventDefault()')
-    expect(source).toContain('setMoved(`${row.model} on ${row.account} removed`)')
+    expect(source).toContain('input.announce(`${input.row.model} on ${input.row.account} removed`)')
     expect(source).toContain('onSelect={() => removeAt(index)}')
   })
 })

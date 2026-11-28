@@ -26,7 +26,8 @@ describe('fallback order is editable by touch (council picker round 5, U5)', () 
 
   it('announces the new rank for the menu and Alt+Arrow alike, and keeps the account in a fixed slot', () => {
     expect(source).toContain('if (to >= 0 && to < count && !props.disabled) moveTo(index, to)')
-    expect(source).toContain('setMoved(`${row.model} on ${row.account} is now fallback ${String(to + 1)}`)')
+    // Round 7 W9: announced once the Host confirms, with the confirmed rank (FallbackEdits).
+    expect(source).toContain('is now fallback ${String(rank + 1)}')
     expect(source).toMatch(/aria-live="polite"[^>]*data-model-fallback-announcer/u)
     expect(tagOf('data-model-fallback-account')).toMatch(/dshx:w-12 dshx:shrink-0/u)
   })
