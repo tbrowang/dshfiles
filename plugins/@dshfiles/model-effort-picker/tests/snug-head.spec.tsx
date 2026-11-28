@@ -6,8 +6,8 @@ describe('the long-name head ends at its ellipsis (council picker round 6, V12)'
   const measure = (text: string): number => text.length * 7
 
   it('shrinks a cut head to the width of the characters it keeps and the ellipsis, with nothing left after', () => {
-    // 80 px of room: "abcdefghij…" would be 77, "abcdefghijk…" 84; the head draws 77 px, not 80.
-    expect(SnugHead.width({ text: 'abcdefghijklmnop', room: 80, measure })).toBe(77)
+    // 80 px of room: "abcdefghij…" would be 77, "abcdefghijk…" 84; the head draws 77 px, plus 1 px of slack (round 7 W4).
+    expect(SnugHead.width({ text: 'abcdefghijklmnop', room: 80, measure })).toBe(78)
   })
 
   it('leaves a head that fits alone', () => {

@@ -64,7 +64,8 @@ export class SnugHead {
     if (input.measure(input.text) <= input.room) return undefined
     for (let keep = input.text.length - 1; keep > 0; keep -= 1) {
       const drawn = input.measure(`${input.text.slice(0, keep)}…`)
-      if (drawn <= input.room) return Math.ceil(drawn)
+      // One pixel of slack: the browser drops a character when the ellipsis lands a fraction over (round 7 W4).
+      if (drawn <= input.room) return Math.ceil(drawn) + 1
     }
     return undefined
   }

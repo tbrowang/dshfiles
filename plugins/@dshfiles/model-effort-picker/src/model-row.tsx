@@ -63,21 +63,52 @@ export const ModelRow = (props: {
   useLayoutEffect(() => {
     const head = snugHead.current
     const row = head?.parentElement?.parentElement
-    if (head === null || parts.tail === '' || row === null || row === undefined || typeof ResizeObserver === 'undefined') return
-    const context = document.createElement('canvas').getContext('2d')
-    if (context === null) return
+    const parent = head?.parentElement
+    if (
+      head === null ||
+      parts.tail === '' ||
+      row === null ||
+      row === undefined ||
+      parent === null ||
+      parent === undefined ||
+      typeof ResizeObserver === 'undefined'
+    )
+      return
+    // Round 7 W4: measured with a hidden span in the head's own computed font (a canvas misread its 450 weight, so the
+    // head kept a gap), and refitted when select mode narrows the row.
+    const ruler = document.createElement('span')
+    ruler.setAttribute('aria-hidden', 'true')
+    Object.assign(ruler.style, { position: 'absolute', visibility: 'hidden', whiteSpace: 'pre', left: '0', top: '0', pointerEvents: 'none' })
+    // Outside the name, so its text never joins the name's.
+    document.body.append(ruler)
     const fit = (): void => {
       head.style.maxWidth = ''
       const style = getComputedStyle(head)
-      context.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`
-      const width = SnugHead.width({ text: head.textContent ?? '', room: head.clientWidth, measure: text => context.measureText(text).width })
+      Object.assign(ruler.style, {
+        font: style.font,
+        letterSpacing: style.letterSpacing,
+        fontFeatureSettings: style.fontFeatureSettings,
+        fontVariationSettings: style.fontVariationSettings,
+      })
+      const width = SnugHead.width({
+        text: head.textContent ?? '',
+        room: head.clientWidth,
+        measure: text => {
+          ruler.textContent = text
+          return ruler.getBoundingClientRect().width
+        },
+      })
       if (width !== undefined) head.style.maxWidth = `${String(width)}px`
     }
     fit()
     const observer = new ResizeObserver(fit)
     observer.observe(row)
-    return () => observer.disconnect()
-  }, [parts.tail, name])
+    observer.observe(parent)
+    return () => {
+      observer.disconnect()
+      ruler.remove()
+    }
+  }, [parts.tail, name, props.selectSeveral])
   const selectMode = props.selectSeveral === true
   const quotaId = props.id === undefined ? undefined : `${props.id}-quota`
 
