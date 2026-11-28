@@ -93,12 +93,12 @@
     "@dshfiles/workspace-folder-picker",
     "@dshfiles/worktree-memory"
   ],
-  "apiMethods": 708,
-  "apiToolBindings": 502,
-  "apiToolNameCount": 502,
-  "apiToolSchemas": 501,
+  "apiMethods": 713,
+  "apiToolBindings": 504,
+  "apiToolNameCount": 504,
+  "apiToolSchemas": 503,
   "definedTools": 26,
-  "tools": 527,
+  "tools": 529,
   "schemas": [
     {
       "name": "activity_timeline_attention",
@@ -430,7 +430,7 @@
     },
     {
       "name": "agents_save",
-      "description": "Create or update one agent. May run only when the user asked for that change.",
+      "description": "Create or update one agent. `tone` is its colour, an identity palette slot 0–5 the active theme paints: null returns it to the default hashed from the handle, and leaving it out keeps the current one. May run only when the user asked for that change.",
       "parameters": {
         "type": "object",
         "properties": {
@@ -541,6 +541,9 @@
               },
               "enabled": {
                 "type": "boolean"
+              },
+              "tone": {
+                "type": "integer"
               }
             },
             "required": [
@@ -3981,6 +3984,28 @@
         "required": [
           "project",
           "guidance"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "backlog_set_tag_color",
+      "description": "Choose the colour of one backlog tag's chips, a slot 0–5 of the active theme's identity palette, so a theme switch recolours it; `slot: null` reverses it to the default colour. backlog_list reports chosen colours in `tagColors`. Run only when the user asked for this change.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "tag": {
+            "description": "The tag as items carry it, without the #.",
+            "type": "string"
+          },
+          "slot": {
+            "type": "integer",
+            "description": "A colour of the active theme's identity palette, 0 to 5; null returns the tag to its default colour."
+          }
+        },
+        "required": [
+          "tag",
+          "slot"
         ],
         "additionalProperties": false
       }
@@ -11599,7 +11624,7 @@
     },
     {
       "name": "theme_define",
-      "description": "Save a theme the user asked for (any named or described theme: Nord, Solarized, \"a cyberpunk theme with rain\") and, by default, switch to it, live with no restart. Look up the theme’s official palette first when it has one and keep its exact colours; give only the schemes it really has. An optional backdrop animates behind the conversation. Returns contrastWarnings for text under WCAG AA: tell the user. Call only when the user asked for a theme. Reversible: theme_set preset returns to a preset; theme_remove deletes it.",
+      "description": "Save a theme the user asked for (any named or described theme: Nord, Solarized, \"a cyberpunk theme with rain\") and, by default, switch to it, live with no restart. Look up the theme’s official palette first when it has one and keep its exact colours; give only the schemes it really has. An optional backdrop animates behind the conversation. An optional palette gives the six identity colours users pick for projects, Backlog tags and agents (a choice stores the slot, so the theme recolours it): give the theme’s own accent colours when it has them (Dracula: cyan, green, orange, purple, pink, yellow) with paletteNames; left out, six are derived from its syntax and accent colours. Returns contrastWarnings for text under WCAG AA: tell the user. Call only when the user asked for a theme. Reversible: theme_set preset returns to a preset; theme_remove deletes it.",
       "parameters": {
         "type": "object",
         "properties": {
@@ -11787,6 +11812,20 @@
                       }
                     },
                     "additionalProperties": false
+                  },
+                  "palette": {
+                    "description": "Exactly 6 #rrggbb: six #rrggbb identity colours (slots 0–5) users pick for projects, Backlog tags and agents; each must read as text (4.5:1) on bg, panel and raised and should stay clear of the success, warning and danger hues. Left out, six are derived from the theme’s syntax and accent colours.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "paletteNames": {
+                    "description": "Exactly 6: six short names for the palette slots, in the same order (the swatch names a screen reader and the picker show); needs palette.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
                   }
                 },
                 "required": [
@@ -11964,6 +12003,20 @@
                       }
                     },
                     "additionalProperties": false
+                  },
+                  "palette": {
+                    "description": "Exactly 6 #rrggbb: six #rrggbb identity colours (slots 0–5) users pick for projects, Backlog tags and agents; each must read as text (4.5:1) on bg, panel and raised and should stay clear of the success, warning and danger hues. Left out, six are derived from the theme’s syntax and accent colours.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "paletteNames": {
+                    "description": "Exactly 6: six short names for the palette slots, in the same order (the swatch names a screen reader and the picker show); needs palette.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
                   }
                 },
                 "required": [
@@ -12275,6 +12328,14 @@
           "path"
         ],
         "additionalProperties": false
+      }
+    },
+    {
+      "name": "thread_failed_turns",
+      "description": "Threads whose last finished turn failed (an error, or the output token limit), newest first. A thread stays listed after it is read, until a later turn of it finishes without failing. Read-only.",
+      "parameters": {
+        "type": "object",
+        "properties": {}
       }
     },
     {
