@@ -143,6 +143,12 @@ export const threadSidebarSettings = defineSettings({
     notificationCategories: notificationCategories.hidden(),
     notificationPlacement: Schema.union(THREAD_NOTIFICATION_PLACEMENTS).default(DEFAULT_PREFERENCES.notificationPlacement).hidden(),
     notificationDurationSeconds: Schema.natural().max(60).default(DEFAULT_PREFERENCES.notificationDurationSeconds).hidden(),
+    notificationReminderMinutes: Schema.natural()
+      .max(60)
+      .default(DEFAULT_PREFERENCES.notificationReminderMinutes)
+      .description(
+        'Play a thread notification and its sound once more after this many minutes when its thread still waits for you: the question is unanswered, the finished turn unread, or the agent message unseen. Opening the thread cancels it. 0 never repeats.',
+      ),
     resumeAfterRestart: Schema.boolean()
       .default(DEFAULT_PREFERENCES.resumeAfterRestart)
       .description('After a managed restart, continue once each thread whose turn it cut off (off by default: it spends a turn).'),
@@ -169,6 +175,9 @@ export const threadSidebarSettings = defineSettings({
     subscriptionDelivery: Schema.union(SUBSCRIPTION_DELIVERY_MODES)
       .default('steer')
       .description('Steer a notice into a watching thread’s live turn, or queue it for after that turn.'),
+    notifyUserRateLimit: Schema.boolean()
+      .default(DEFAULT_PREFERENCES.notifyUserRateLimit)
+      .description('Limit agent notifications (notify_user) to 3 per thread and 12 in total within 10 minutes. Off: every notify_user call is delivered.'),
     applyActionsToChildThreads: Schema.boolean()
       .default(DEFAULT_PREFERENCES.applyActionsToChildThreads)
       .description('Apply manual pin, snooze, archive, and restore actions to all child threads.'),
