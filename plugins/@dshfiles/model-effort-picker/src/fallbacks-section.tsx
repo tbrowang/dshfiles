@@ -5,7 +5,7 @@ import { aiAccountsApi } from '@dshfiles/ai-accounts/api'
 import { aiAccountsModelFallbackApi, FALLBACK_RETURN_POLICIES, type FallbackRoute, type ModelFallbackSnapshot } from '@dshfiles/ai-accounts/model-fallback-api'
 import { useApi, useApiQuery } from '@dshfiles/dshx/client'
 import { Button } from '@dshfiles/plugin-ui/components/ui/button'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@dshfiles/plugin-ui/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@dshfiles/plugin-ui/components/ui/dropdown-menu'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@dshfiles/plugin-ui/components/ui/select'
 import { ChevronRightIcon, EllipsisIcon, PlusIcon, Undo2Icon } from '@dshfiles/plugin-ui/icons'
 import { cn } from '@dshfiles/plugin-ui/lib/utils'
@@ -169,6 +169,8 @@ export const FallbackList = (props: {
                   className={cn(
                     'dshx:flex dshx:h-8 dshx:min-w-0 dshx:items-center dshx:gap-2 dshx:rounded-md dshx:text-xs dshx:outline-none dshx:focus-visible:ring-2 dshx:focus-visible:ring-ring dshx:pointer-coarse:h-11',
                     row.serving && 'dshx:bg-selected-wash',
+                    // Round 7 W1: the route whose Actions menu is open shows it, so the menu never reads as the next one's.
+                    'dshx:has-[[data-model-fallback-actions][data-state=open]]:bg-accent/50',
                   )}
                   data-model-fallback-rung
                   key={row.id}
@@ -203,7 +205,7 @@ export const FallbackList = (props: {
                     <DropdownMenuTrigger asChild>
                       <Button
                         aria-label={`Actions for fallback ${String(index + 1)}`}
-                        className="dshx:size-7 dshx:shrink-0 dshx:text-muted-foreground dshx:pointer-coarse:size-11 dshx:pointer-coarse:justify-end dshx:pointer-coarse:pr-1.5"
+                        className="dshx:size-7 dshx:shrink-0 dshx:text-muted-foreground dshx:data-[state=open]:bg-accent dshx:data-[state=open]:text-foreground dshx:pointer-coarse:size-11 dshx:pointer-coarse:justify-end dshx:pointer-coarse:pr-1.5"
                         data-model-fallback-actions
                         disabled={props.disabled}
                         size="icon-xs"
@@ -214,14 +216,34 @@ export const FallbackList = (props: {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
                       align="end"
+                      // Round 7 W1: the menu is named by its route (the phone sheet shows it as its title), and in dark its
+                      // border takes the strong step so it separates from the pane.
+                      aria-labelledby={`${listId}-actions-${String(index)}`}
+                      className="dshx:dark:border-(--dshx-tone-6)"
                       // The trigger leaves with its route on Remove; the effect above places focus instead.
                       onCloseAutoFocus={event => {
                         if (focusAfterRemove.current !== null) event.preventDefault()
                       }}
                     >
-                      {index === 0 ? null : <DropdownMenuItem onSelect={() => moveTo(index, index - 1)}>Move up</DropdownMenuItem>}
-                      {index === count - 1 ? null : <DropdownMenuItem onSelect={() => moveTo(index, index + 1)}>Move down</DropdownMenuItem>}
-                      <DropdownMenuItem onSelect={() => removeAt(index)} variant="destructive">
+                      <DropdownMenuLabel
+                        // On the phone (where text-xs reads 13 px) the title starts on the rows' 16 px inset, 8 px above them.
+                        className="dshx:hidden dshx:px-3 dshx:pt-0 dshx:pb-2 dshx:text-sm dshx:font-medium dshx:text-muted-foreground dshx:pointer-coarse:block dshx:pointer-coarse:pl-2 dshx:pointer-coarse:text-xs"
+                        data-model-fallback-actions-title
+                        id={`${listId}-actions-${String(index)}`}
+                      >
+                        {`Fallback ${String(index + 1)} · ${row.model} · ${row.tag}`}
+                      </DropdownMenuLabel>
+                      {index === 0 ? null : (
+                        <DropdownMenuItem className={ACTION_ITEM} onSelect={() => moveTo(index, index - 1)}>
+                          Move up
+                        </DropdownMenuItem>
+                      )}
+                      {index === count - 1 ? null : (
+                        <DropdownMenuItem className={ACTION_ITEM} onSelect={() => moveTo(index, index + 1)}>
+                          Move down
+                        </DropdownMenuItem>
+                      )}
+                      <DropdownMenuItem className={ACTION_ITEM} onSelect={() => removeAt(index)} variant="destructive">
                         Remove
                       </DropdownMenuItem>
                     </DropdownMenuContent>
@@ -301,6 +323,10 @@ export const FallbackList = (props: {
  * The ordered routes the Host walks when this thread's model request fails under Priority distribution. The Host
  * owns the chain (AI Accounts runs the fail-over), so every edit is a Host write and the list renders what it stored.
  */
+/** Round 7 W1: a keyboard-highlighted action draws the accent ring inside it (the kit's row highlight alone is faint). */
+const ACTION_ITEM =
+  'dshx:focus-visible:outline-2 dshx:focus-visible:-outline-offset-2 dshx:focus-visible:outline-solid dshx:focus-visible:outline-(--dsw-alias-state-business-primary)'
+
 /** Which route's Actions button takes focus after a removal (round 6 V7): the one now at its rank, else the last. */
 export class FallbackFocus {
   static afterRemove(input: { readonly index: number; readonly count: number }): number {

@@ -17,9 +17,9 @@ describe('fallback order is editable by touch (council picker round 5, U5)', () 
   })
 
   it('offers Move up, Move down and Remove, leaving out the moves the rank cannot make', () => {
-    expect(source).toMatch(/\{index === 0 \? null : <DropdownMenuItem onSelect=\{\(\) => moveTo\(index, index - 1\)\}>Move up<\/DropdownMenuItem>\}/u)
+    expect(source).toMatch(/\{index === 0 \? null : \(\s*<DropdownMenuItem className=\{ACTION_ITEM\} onSelect=\{\(\) => moveTo\(index, index - 1\)\}>\s*Move up\s*<\/DropdownMenuItem>/u)
     expect(source).toMatch(
-      /\{index === count - 1 \? null : <DropdownMenuItem onSelect=\{\(\) => moveTo\(index, index \+ 1\)\}>Move down<\/DropdownMenuItem>\}/u,
+      /\{index === count - 1 \? null : \(\s*<DropdownMenuItem className=\{ACTION_ITEM\} onSelect=\{\(\) => moveTo\(index, index \+ 1\)\}>\s*Move down\s*<\/DropdownMenuItem>/u,
     )
     expect(source).toMatch(/onSelect=\{\(\) => removeAt\(index\)\}[^>]*>\s*Remove/u)
   })
