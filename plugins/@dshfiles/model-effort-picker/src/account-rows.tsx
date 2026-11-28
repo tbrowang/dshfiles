@@ -76,7 +76,7 @@ export const AccountRows = (props: {
                   'dshx:flex dshx:h-8 dshx:w-full dshx:min-w-0 dshx:items-center dshx:gap-2 dshx:rounded-md dshx:px-2 dshx:pointer-fine:pr-1.75 dshx:text-left dshx:text-xs dshx:outline-none dshx:hover:bg-accent/50 dshx:focus-visible:ring-2 dshx:focus-visible:ring-ring dshx:pointer-coarse:h-11',
                   // Round 3 R14, round 5 U4: hover is a light wash; the chosen account is its 1 px edge, check and 600 weight, no wash,
                   // so it never reads as the list's keyboard row.
-                  checked && 'dshx:font-selected dshx:selected-edge',
+                  checked && 'dshx:font-selected',
                 )}
                 data-model-account
                 key={account.id}
