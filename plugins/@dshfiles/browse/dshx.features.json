@@ -5,7 +5,8 @@
     {
       "id": "browser-panel",
       "title": "See the browser agents drive",
-      "summary": "Agents › Browser (browse), also in the command palette and the New tab view chooser, reads `browse status --json` on the Host: CLI version, whether the relay runs, the extension and connected browsers, and the agent tabs. It never starts the relay, refreshes every pollIntervalMs while open, and says how to install browse when the CLI is missing. Agents read the same status with browse_status.",
+      "summary": "See whether the browse relay runs, which browsers are connected and which tabs your agents hold.",
+      "details": "Agents › Browser (browse), also in the command palette and the New tab view chooser, reads `browse status --json` on the Host: CLI version, whether the relay runs, the extension and connected browsers, and the agent tabs. It never starts the relay, refreshes every pollIntervalMs while open, and says how to install browse when the CLI is missing. Agents read the same status with browse_status.",
       "reach": [
         "click button \"Open command palette\"",
         "fill combobox \"Search the command palette\" \"Browser (browse)\"",
@@ -107,7 +108,8 @@
     {
       "id": "browser-pairing",
       "title": "Pair a browser with a one-time code",
-      "summary": "Pair a browser runs `browse pair --wait-seconds 600` on the Host and shows its one-time code large with a copy button and where to enter it (Extensions → browse → Options). The process keeps waiting Host-side; the panel then shows paired, expired, failed or cancelled. One pairing runs at a time: starting again returns the same code, Cancel stops it. Paired browsers are listed from `browse pair --list` and can be unpaired after a confirmation. Agents get browse_pair_start, browse_pair_cancel, browse_pairings and browse_pairing_revoke (confirm: true required).",
+      "summary": "Pair a browser with the browse relay by entering a one-time code that DSH shows, and list the browsers already paired.",
+      "details": "Pair a browser runs `browse pair --wait-seconds 600` on the Host and shows its one-time code large with a copy button and where to enter it (Extensions → browse → Options). The process keeps waiting Host-side; the panel then shows paired, expired, failed or cancelled. One pairing runs at a time: starting again returns the same code, Cancel stops it. Paired browsers are listed from `browse pair --list` and can be unpaired after a confirmation. Agents get browse_pair_start, browse_pair_cancel, browse_pairings and browse_pairing_revoke (confirm: true required).",
       "reach": [
         "click button \"Open command palette\"",
         "fill combobox \"Search the command palette\" \"Browser (browse)\"",
@@ -208,7 +210,8 @@
     {
       "id": "handoff-attention",
       "title": "Tabs waiting on you reach the Inbox",
-      "summary": "When an agent's browse call waits on a person (sign-in, captcha, 2FA), each waiting tab becomes a blocking Inbox item with the agent's message, resolved once the call continues, and the panel header shows how many tabs wait. The Host reads `browse status --json` every pollIntervalMs only while notifyHandoffs is on (off by default, since it spends Host time without an agent asking); turning it off resolves the open items and stops the check. It runs the local CLI only and spends no tokens.",
+      "summary": "When an agent waits on you in the browser, for a sign-in or a captcha, the wait shows up in your Inbox.",
+      "details": "When an agent's browse call waits on a person (sign-in, captcha, 2FA), each waiting tab becomes a blocking Inbox item with the agent's message, resolved once the call continues, and the panel header shows how many tabs wait. The Host reads `browse status --json` every pollIntervalMs only while notifyHandoffs is on (off by default, since it spends Host time without an agent asking); turning it off resolves the open items and stops the check. It runs the local CLI only and spends no tokens.",
       "surfaces": ["host", "integration", "settings"],
       "surface": "attentionProvider",
       "destination": "inbox",
