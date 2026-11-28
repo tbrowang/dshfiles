@@ -293,7 +293,8 @@ export const FallbackList = (props: {
               >
                 <SelectTrigger
                   aria-label="After a fallback answers"
-                  className="dshx:h-7 dshx:gap-1 dshx:px-2 dshx:text-xs dshx:pointer-coarse:h-11"
+                  // Round 7 W6: 44 pt drawn on touch (the kit's small size set its height over the touch class).
+                  className="dshx:h-7 dshx:gap-1 dshx:px-2 dshx:text-xs dshx:pointer-coarse:h-11!"
                   data-model-fallback-policy-select
                   size="sm"
                 >
