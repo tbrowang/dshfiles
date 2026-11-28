@@ -2,7 +2,7 @@
 
 # Agents & orchestration
 
-Persistent agents that message each other, questions that wait for you, background jobs, threads on other hosts, and the tools, skills and MCP servers agents use.
+Persistent agents that message each other, questions that wait for you, background jobs, threads on other hosts, the tools, skills and MCP servers agents use, and the browser they drive.
 
 Pack id `agents`. Back to [all packs](README.md).
 
@@ -17,6 +17,7 @@ Pack id `agents`. Back to [all packs](README.md).
 7. [`@dshfiles/capabilities-hub`](../../plugins/@dshfiles/capabilities-hub/README.md) — A Capabilities hub page: one launch point for agent skills, MCP servers and DSH plugins that opens each owner's own manager, with skills.sh link-out guidance and separate trust labels.
 8. [`@dshfiles/mcp-servers`](../../plugins/@dshfiles/mcp-servers/README.md) — Manage profile-wide MCP server configurations and native DSH MCP clients.
 9. [`@dshfiles/mcp-endpoint`](../../plugins/@dshfiles/mcp-endpoint/README.md) — An MCP server (streamable HTTP, bearer token) on the DSH Web server, so Claude Code or Codex in a terminal can list, start, message, wait on and stop DSH threads.
+10. [`@dshfiles/browse`](../../plugins/@dshfiles/browse/README.md) — Companion panel for the browse CLI: relay and extension status, browser pairing, paired browsers and agent tabs that wait on you.
 
 ## Prerequisites
 
@@ -28,7 +29,7 @@ Pack id `agents`. Back to [all packs](README.md).
 
 ## Features
 
-From the onboarding feature catalog: 58 features, the 46 curated ones first.
+From the onboarding feature catalog: 61 features, the 46 curated ones first.
 
 ### Curated
 
@@ -93,6 +94,9 @@ From the onboarding feature catalog: 58 features, the 46 curated ones first.
 10. **Drive DSH threads from an outside agent over MCP** (`mcp-endpoint`) — Let Claude Code, Codex or any MCP client list, start and follow DSH threads.
 11. **Expose plugin tools to MCP clients** (`mcp-endpoint`) — Off by default: MCP clients can also use agent tools, read-only or read and write.
 12. **Issue an MCP token and connect a client** (`mcp-endpoint`, settings) — Create an MCP token and copy setup steps for Claude Code, Codex, Cursor or VS Code.
+13. **See the browser agents drive** (`browse`, agents) — See whether the browse relay runs, which browsers are connected and which tabs your agents hold.
+14. **Pair a browser with a one-time code** (`browse`, agents) — Pair a browser with the browse relay by entering a one-time code that DSH shows, and list the browsers already paired.
+15. **Tabs waiting on you reach the Inbox** (`browse`, inbox) — When an agent waits on you in the browser, for a sign-in or a captcha, the wait shows up in your Inbox.
 
 ## Enable it
 

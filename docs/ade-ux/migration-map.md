@@ -6,17 +6,17 @@ Where every catalog feature lands in the unified shell of [the ADE plan](README.
 classification is the `surface`, `destination` and `currentSurface` fields of each feature in
 `plugins/@dshfiles/*/dshx.features.json`; `features:check` validates them. Fix a row there, then regenerate.
 
-588 features from 121 plugins.
+591 features from 122 plugins.
 
 ## Counts
 
 | Destination | agentToolOnly | attentionProvider | command | composerContribution | destinationSection | detail | entityProvider | infrastructure | rowAction | rowDecorator | settingsSection | statusItem | threadFacet | transcriptCard | Total |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | Threads |  |  |  |  | 13 | 1 | 1 |  | 17 | 2 |  | 1 |  |  | 35 |
-| Inbox |  | 19 |  |  | 3 |  |  |  | 1 |  |  |  |  |  | 23 |
+| Inbox |  | 20 |  |  | 3 |  |  |  | 1 |  |  |  |  |  | 24 |
 | Land |  |  | 2 |  | 7 | 2 | 1 |  | 4 |  |  |  |  |  | 16 |
 | Work |  |  | 1 |  | 24 | 8 | 1 |  | 8 |  |  |  |  |  | 42 |
-| Agents |  |  |  |  | 6 |  | 1 |  |  |  |  |  |  |  | 7 |
+| Agents |  |  |  |  | 8 |  | 1 |  |  |  |  |  |  |  | 9 |
 | Observe |  |  |  |  | 23 | 2 |  |  | 3 |  |  | 1 |  |  | 29 |
 | Knowledge |  |  |  |  | 7 | 4 | 1 |  | 2 |  |  |  |  |  | 14 |
 | Settings |  |  |  |  | 3 |  |  |  | 1 |  | 69 |  |  |  | 73 |
@@ -74,6 +74,8 @@ Features grouped by the region they occupy today (the prefix of `currentSurface`
 | agent tools contributed by configured plugins | 1 | No place of its own 1 |
 | Agent tools theme_define / theme_set (customTheme) / theme_remove / theme_get; Settings › General › Appearance (Custom theme id, Dracula preset) | 1 | Settings 1 |
 | agent tools traces_store_space, traces_reclaim_space | 1 | No place of its own 1 |
+| Agents › Browser (browse) › Pair a browser and Paired browsers | 1 | Agents 1 |
+| Agents › Browser (browse); command palette and New tab › Browser (browse) | 1 | Agents 1 |
 | Backlog composer | 1 | Composer 1 |
 | Backlog settings › Remote sync › Add Jira connection (rendered by @dshfiles/backlog) | 1 | No place of its own 1 |
 | Backlog settings › Remote sync › Add Notion connection (rendered by @dshfiles/backlog) | 1 | No place of its own 1 |
@@ -96,6 +98,7 @@ Features grouped by the region they occupy today (the prefix of `currentSurface`
 | Host contract | 1 | Inbox 1 |
 | Hosts › Add folder (directory-only picker) | 1 | Composer 1 |
 | Inbox | 1 | Inbox 1 |
+| Inbox › Needs you (source browse.handoff); Browser (browse) header badge | 1 | Inbox 1 |
 | keyboard | 5 | No place of its own 5 |
 | left-nav | 123 | Work 37, Observe 24, Settings 16, Land 15, Inbox 13, Agents 6, Knowledge 6, Thread panel 4, No place of its own 1, Threads 1 |
 | main-tabs | 12 | No place of its own 7, Thread panel 4, Settings 1 |
@@ -179,7 +182,7 @@ rail destination (default); 35 features.
 
 ### Inbox
 
-rail destination; 23 features.
+rail destination; 24 features.
 
 | Feature | Surface | Today |
 | --- | --- | --- |
@@ -193,6 +196,7 @@ rail destination; 23 features.
 | ai-accounts/quota-inbox-items: Quota-blocked threads in the Inbox, resumable in place | attentionProvider | left-nav: Inbox › ai-accounts.quota-continuation |
 | backlog/attention-inbox: Items that need you | attentionProvider | left-nav: Backlog › Triage view (links to the Inbox) |
 | backlog/backlog-inbox-items: Backlog requests in the Inbox | attentionProvider | left-nav: Inbox › backlog.attention |
+| browse/handoff-attention: Tabs waiting on you reach the Inbox | attentionProvider | Inbox › Needs you (source browse.handoff); Browser (browse) header badge |
 | hmr-gate/deferred-update-inbox-item: Plugin updates waiting for a restart in the Inbox | attentionProvider | left-nav: Inbox › hmr-gate.deferred-update |
 | jj-integration/land-inbox-items: Blocked and ready-to-land workspaces in the Inbox | attentionProvider | left-nav: Inbox › jj-integration.land-blocked / jj-integration.ready-to-land |
 | thread-sidebar/auto-resume-after-restart: Resume threads a managed restart cut off | attentionProvider | activity: Resumed automatically after the restart |
@@ -281,7 +285,7 @@ rail destination; 42 features.
 
 ### Agents
 
-rail destination; 7 features.
+rail destination; 9 features.
 
 | Feature | Surface | Today |
 | --- | --- | --- |
@@ -291,6 +295,8 @@ rail destination; 7 features.
 | agents/agent-colour: Colour an agent | destinationSection | left-nav: Agents |
 | agents/agent-registry: Manage agents | destinationSection | left-nav: Agents |
 | agents/agent-tools-tree: Choose an agent's tools, subagents and projects | destinationSection | left-nav: Agents › agent editor › Tools, Delegation, Default for projects |
+| browse/browser-pairing: Pair a browser with a one-time code | destinationSection | Agents › Browser (browse) › Pair a browser and Paired browsers |
+| browse/browser-panel: See the browser agents drive | destinationSection | Agents › Browser (browse); command palette and New tab › Browser (browse) |
 | agents/agent-mention-preview: Preview an agent from its mention | entityProvider | overlay: shared reference preview card (input-trigger entity registry), agent kind |
 
 ### Observe
