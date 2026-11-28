@@ -136,8 +136,10 @@ export const ModelDetails = (props: {
         <button
           aria-label={draft ? 'Back to the model in use' : 'Back to models'}
           className={cn(
-            'dshx:hidden dshx:size-6 dshx:pointer-coarse:size-11 dshx:pointer-coarse:-ml-2 dshx:pointer-coarse:justify-start dshx:pointer-coarse:pl-2 dshx:shrink-0 dshx:items-center dshx:justify-center dshx:rounded dshx:text-muted-foreground dshx:outline-none dshx:hover:bg-muted dshx:hover:text-foreground dshx:focus-visible:ring-2 dshx:focus-visible:ring-ring dshx:@max-pane-compact:flex',
-            draft && 'dshx:flex',
+            // Round 7 W3: Back always holds its slot on desktop (invisible without a draft), so the mark and title never jump;
+            // with a mouse it sits on the title's first line.
+            'dshx:flex dshx:size-6 dshx:pointer-fine:-mt-1 dshx:pointer-coarse:size-11 dshx:pointer-coarse:-ml-2 dshx:pointer-coarse:justify-start dshx:pointer-coarse:pl-2 dshx:shrink-0 dshx:items-center dshx:justify-center dshx:rounded dshx:text-muted-foreground dshx:outline-none dshx:hover:bg-muted dshx:hover:text-foreground dshx:focus-visible:ring-2 dshx:focus-visible:ring-ring',
+            !draft && 'dshx:invisible dshx:@max-pane-compact:visible',
           )}
           data-model-details-back
           onClick={props.onBack}
