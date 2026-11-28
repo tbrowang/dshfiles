@@ -254,9 +254,10 @@ export const FallbackList = (props: {
                     <DropdownMenuContent
                       align="end"
                       // Round 7 W1: the menu is named by its route (the phone sheet shows it as its title), and in dark its
-                      // border takes the strong step so it separates from the pane.
+                      // border takes the strong step so it separates from the pane. Round 7 W10: on the phone it shares the picker sheet's
+                      // surface.
                       aria-labelledby={`${listId}-actions-${String(index)}`}
-                      className="dshx:dark:border-(--dshx-tone-6)"
+                      className="dshx:dark:border-(--dshx-tone-6) dshx:in-[html[data-shell-phone-nav]]:bg-popover!"
                       // The trigger leaves with its route on Remove; the effect above places focus instead.
                       onCloseAutoFocus={event => {
                         if (focusAfterRemove.current !== null) event.preventDefault()

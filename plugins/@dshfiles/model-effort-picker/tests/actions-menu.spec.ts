@@ -13,7 +13,7 @@ describe('the fallback Actions menu names its route (council picker round 7, W1)
   it('marks the open trigger and its route, borders the dark menu on the strong step, and rings the keyboard item', () => {
     expect(source).toContain('dshx:data-[state=open]:bg-accent')
     expect(source).toContain('dshx:has-[[data-model-fallback-actions][data-state=open]]:bg-accent/50')
-    expect(source).toContain('className="dshx:dark:border-(--dshx-tone-6)"')
+    expect(source).toContain('className="dshx:dark:border-(--dshx-tone-6) dshx:in-[html[data-shell-phone-nav]]:bg-popover!"')
     expect(source).toMatch(/const ACTION_ITEM =\s*'dshx:focus-visible:outline-2[^']*outline-\(--dsw-alias-state-business-primary\)'/u)
   })
 })

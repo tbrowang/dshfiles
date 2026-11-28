@@ -193,3 +193,12 @@ describe('fan-out prompt focus, round 6 (council picker V3)', () => {
     expect(threadSidebarDictionaries.en.threadSidebarFanOutHelp).toBe('Write one prompt. Each model replies in a separate thread.')
   })
 })
+
+describe('the fan-out sheet matches the picker sheet on the phone (council picker round 7, W10)', () => {
+  const shell = readFileSync(new URL('./sidebar-shell.tsx', import.meta.url), 'utf8')
+
+  it("takes the picker's surface, heading size and Close axis", () => {
+    expect(shell).toContain('dshx:in-[html[data-shell-phone-nav]]:[&>[data-slot=dialog-close]]:right-2 dshx:dark:in-[html[data-shell-phone-nav]]:[--dshx-dialog-fill:var(--dshx-tone-2)]')
+    expect(shell).toContain('<DialogTitle className="dshx:in-[html[data-shell-phone-nav]]:text-heading">')
+  })
+})
