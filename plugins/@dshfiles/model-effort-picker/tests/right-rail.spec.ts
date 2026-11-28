@@ -9,6 +9,8 @@ describe('one right rail on desktop (council picker round 6, V11)', () => {
     expect(source('account-rows.tsx')).toContain('dshx:px-2 dshx:pointer-fine:pr-1.75 dshx:text-left')
     expect(source('account-rows.tsx')).toContain('dshx:pr-7.5 dshx:pointer-fine:pr-7.25')
     expect(source('fallbacks-section.tsx')).toContain('dshx:tabular-nums dshx:pointer-fine:-mr-1.75')
+    // Round 7 W5: on touch too.
+    expect(source('fallbacks-section.tsx')).toContain('dshx:pointer-fine:-mr-1.75 dshx:pointer-coarse:-mr-5.5')
     expect(source('fallbacks-section.tsx')).toContain('dshx:pr-1.75 dshx:pointer-coarse:pr-1.5')
   })
 })

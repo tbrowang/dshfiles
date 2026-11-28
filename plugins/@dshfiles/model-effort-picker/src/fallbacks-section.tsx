@@ -218,7 +218,8 @@ export const FallbackList = (props: {
                   <span
                     className={cn(
                       // Round 6 V11: with a mouse the quota ends where the account quotas end, 7 px past the gap.
-                      'dshx:w-9 dshx:shrink-0 dshx:text-right dshx:tabular-nums dshx:pointer-fine:-mr-1.75',
+                      // Round 7 W5: on touch too, into the 44 pt Actions box's empty left part (the button still takes the taps).
+                      'dshx:w-9 dshx:shrink-0 dshx:text-right dshx:tabular-nums dshx:pointer-fine:-mr-1.75 dshx:pointer-coarse:-mr-5.5',
                       row.quota === undefined ? 'dshx:text-muted-foreground' : quotaTone(row.quota.percent),
                     )}
                     data-model-fallback-quota
