@@ -619,7 +619,7 @@ export const ModelEffortPicker = ({ locked, available, directory, load, select, 
                     aria-multiselectable={several || undefined}
                     // On touch the rows end clear of the list's 10 px overlay scrollbar, which took the last 4 px of each
                     // row's 44 pt details chevron (round 3 touch probe).
-                    className="dshx:flex dshx:flex-col dshx:gap-px dshx:py-1 dshx:pr-1 dshx:@max-pane-compact:pl-1 dshx:@max-pane-compact:pr-2"
+                    className="dshx:flex dshx:flex-col dshx:gap-px dshx:py-1 dshx:pr-1 dshx:@max-pane-compact:pr-2"
                     id={listboxId}
                     ref={attachModelList}
                     role="listbox"

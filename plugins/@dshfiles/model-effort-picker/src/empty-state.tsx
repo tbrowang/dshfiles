@@ -1,4 +1,5 @@
 import { Button } from '@dshfiles/plugin-ui/components/ui/button'
+import { cn } from '@dshfiles/plugin-ui/lib/utils'
 
 /**
  * Council picker round 1, N4: the list's empty states, each with its way forward. A search with no match offers to clear
@@ -11,7 +12,11 @@ export const ListEmptyState = (props: {
   readonly onOpenAccounts?: (() => void) | undefined
 }) => (
   <div
-    className="dshx:flex dshx:min-h-0 dshx:flex-1 dshx:flex-col dshx:items-center dshx:justify-center dshx:gap-2 dshx:px-3 dshx:py-8 dshx:text-center"
+    className={cn(
+      'dshx:flex dshx:min-h-0 dshx:flex-1 dshx:flex-col dshx:items-center dshx:justify-center dshx:gap-2 dshx:px-3 dshx:py-8 dshx:text-center',
+      // Round 7 W7: on the phone the list section has no right inset; take the search row's 8 px, so this centres.
+      props.kind !== 'no-models' && 'dshx:@max-pane-compact:mr-2',
+    )}
     data-model-picker-empty={props.kind}
   >
     {props.kind === 'loading' ? (
