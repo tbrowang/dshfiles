@@ -397,7 +397,7 @@ export const BrowsePanel = (props: { readonly services: BrowsePanelServices; rea
           </Badge>
         ) : null}
         <Button aria-label="Check status now" className={cn('dshx:ml-auto', touch)} size="icon-sm" variant="ghost" onClick={() => void status.refetch()}>
-          <RefreshCwIcon className={cn(status.isFetching && 'dshx:animate-spin')} />
+          <RefreshCwIcon className={cn(status.isFetching && 'dshx:motion-safe:animate-spin')} />
         </Button>
       </header>
       <StatusBody error={status.isError ? errorMessage(status.error, 'The browse plugin did not answer.') : null} status={data} />
